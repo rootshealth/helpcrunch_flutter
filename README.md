@@ -1,5 +1,7 @@
 # helpcrunch
 
+alpha-stage helpcrunch plugin for flutter
+
 Uses pigeon
 
 To update the generated code, run
