@@ -35,9 +35,7 @@ flutter:
         pluginClass: HelpcrunchPlugin
       ios:
         pluginClass: HelpcrunchPlugin
-      web:
-        pluginClass: HelpcrunchWeb
-        fileName: helpcrunch_web.dart
+
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
