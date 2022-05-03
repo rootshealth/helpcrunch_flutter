@@ -51,6 +51,15 @@ public class Pigeon {
       this.appSecret = setterArg;
     }
 
+    private @NonNull Boolean iOSShouldUsePushNotificationDelegate;
+    public @NonNull Boolean getIOSShouldUsePushNotificationDelegate() { return iOSShouldUsePushNotificationDelegate; }
+    public void setIOSShouldUsePushNotificationDelegate(@NonNull Boolean setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"iOSShouldUsePushNotificationDelegate\" is null.");
+      }
+      this.iOSShouldUsePushNotificationDelegate = setterArg;
+    }
+
     /** Constructor is private to enforce null safety; use Builder. */
     private HelpCrunchInitializationParams() {}
     public static final class Builder {
@@ -69,11 +78,17 @@ public class Pigeon {
         this.appSecret = setterArg;
         return this;
       }
+      private @Nullable Boolean iOSShouldUsePushNotificationDelegate;
+      public @NonNull Builder setIOSShouldUsePushNotificationDelegate(@NonNull Boolean setterArg) {
+        this.iOSShouldUsePushNotificationDelegate = setterArg;
+        return this;
+      }
       public @NonNull HelpCrunchInitializationParams build() {
         HelpCrunchInitializationParams pigeonReturn = new HelpCrunchInitializationParams();
         pigeonReturn.setHelpCrunchAppId(helpCrunchAppId);
         pigeonReturn.setOrganizationName(organizationName);
         pigeonReturn.setAppSecret(appSecret);
+        pigeonReturn.setIOSShouldUsePushNotificationDelegate(iOSShouldUsePushNotificationDelegate);
         return pigeonReturn;
       }
     }
@@ -82,6 +97,7 @@ public class Pigeon {
       toMapResult.put("helpCrunchAppId", helpCrunchAppId);
       toMapResult.put("organizationName", organizationName);
       toMapResult.put("appSecret", appSecret);
+      toMapResult.put("iOSShouldUsePushNotificationDelegate", iOSShouldUsePushNotificationDelegate);
       return toMapResult;
     }
     static @NonNull HelpCrunchInitializationParams fromMap(@NonNull Map<String, Object> map) {
@@ -92,6 +108,8 @@ public class Pigeon {
       pigeonResult.setOrganizationName((String)organizationName);
       Object appSecret = map.get("appSecret");
       pigeonResult.setAppSecret((String)appSecret);
+      Object iOSShouldUsePushNotificationDelegate = map.get("iOSShouldUsePushNotificationDelegate");
+      pigeonResult.setIOSShouldUsePushNotificationDelegate((Boolean)iOSShouldUsePushNotificationDelegate);
       return pigeonResult;
     }
   }
@@ -252,6 +270,10 @@ public class Pigeon {
     void showChatScreen(Result<Void> result);
     void updateUser(@NonNull HelpCrunchUser user, Result<Void> result);
     void logoutUser(Result<Void> result);
+    void registerForRemoteMessages(Result<Void> result);
+    void getNumberOfUnreadChats(Result<Long> result);
+    @NonNull Boolean isReady();
+    @NonNull Boolean hasError();
 
     /** The codec used by HelpCrunchPlugin. */
     static MessageCodec<Object> getCodec() {
@@ -381,6 +403,102 @@ public class Pigeon {
               wrapped.put("error", wrapError(exception));
               reply.reply(wrapped);
             }
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.HelpCrunchPlugin.registerForRemoteMessages", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              Result<Void> resultCallback = new Result<Void>() {
+                public void success(Void result) {
+                  wrapped.put("result", null);
+                  reply.reply(wrapped);
+                }
+                public void error(Throwable error) {
+                  wrapped.put("error", wrapError(error));
+                  reply.reply(wrapped);
+                }
+              };
+
+              api.registerForRemoteMessages(resultCallback);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+              reply.reply(wrapped);
+            }
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.HelpCrunchPlugin.getNumberOfUnreadChats", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              Result<Long> resultCallback = new Result<Long>() {
+                public void success(Long result) {
+                  wrapped.put("result", result);
+                  reply.reply(wrapped);
+                }
+                public void error(Throwable error) {
+                  wrapped.put("error", wrapError(error));
+                  reply.reply(wrapped);
+                }
+              };
+
+              api.getNumberOfUnreadChats(resultCallback);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+              reply.reply(wrapped);
+            }
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.HelpCrunchPlugin.isReady", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              Boolean output = api.isReady();
+              wrapped.put("result", output);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.HelpCrunchPlugin.hasError", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              Boolean output = api.hasError();
+              wrapped.put("result", output);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
           });
         } else {
           channel.setMessageHandler(null);

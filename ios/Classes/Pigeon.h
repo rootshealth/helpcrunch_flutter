@@ -16,10 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)makeWithHelpCrunchAppId:(NSNumber *)helpCrunchAppId
     organizationName:(NSString *)organizationName
-    appSecret:(NSString *)appSecret;
+    appSecret:(NSString *)appSecret
+    iOSShouldUsePushNotificationDelegate:(NSNumber *)iOSShouldUsePushNotificationDelegate;
 @property(nonatomic, strong) NSNumber * helpCrunchAppId;
 @property(nonatomic, copy) NSString * organizationName;
 @property(nonatomic, copy) NSString * appSecret;
+@property(nonatomic, strong) NSNumber * iOSShouldUsePushNotificationDelegate;
 @end
 
 @interface HelpCrunchUser : NSObject
@@ -47,6 +49,12 @@ NSObject<FlutterMessageCodec> *HelpCrunchPluginGetCodec(void);
 - (void)showChatScreenWithCompletion:(void(^)(FlutterError *_Nullable))completion;
 - (void)updateUserUser:(HelpCrunchUser *)user completion:(void(^)(FlutterError *_Nullable))completion;
 - (void)logoutUserWithCompletion:(void(^)(FlutterError *_Nullable))completion;
+- (void)registerForRemoteMessagesWithCompletion:(void(^)(FlutterError *_Nullable))completion;
+- (void)getNumberOfUnreadChatsWithCompletion:(void(^)(NSNumber *_Nullable, FlutterError *_Nullable))completion;
+/// @return `nil` only when `error != nil`.
+- (nullable NSNumber *)isReadyWithError:(FlutterError *_Nullable *_Nonnull)error;
+/// @return `nil` only when `error != nil`.
+- (nullable NSNumber *)hasErrorWithError:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void HelpCrunchPluginSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<HelpCrunchPlugin> *_Nullable api);

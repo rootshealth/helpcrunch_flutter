@@ -10,10 +10,13 @@ class HelpCrunchInitializationParams {
 
   final String appSecret;
 
+  final bool iOSShouldUsePushNotificationDelegate;
+
   HelpCrunchInitializationParams({
     required this.helpCrunchAppId,
     required this.organizationName,
     required this.appSecret,
+    required this.iOSShouldUsePushNotificationDelegate,
   });
 }
 
@@ -51,4 +54,14 @@ abstract class HelpCrunchPlugin {
 
   @async
   void logoutUser();
+
+  @async
+  void registerForRemoteMessages();
+
+  @async
+  int getNumberOfUnreadChats();
+
+  bool isReady();
+
+  bool hasError();
 }

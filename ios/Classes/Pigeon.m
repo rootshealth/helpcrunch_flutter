@@ -43,11 +43,13 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 @implementation HelpCrunchInitializationParams
 + (instancetype)makeWithHelpCrunchAppId:(NSNumber *)helpCrunchAppId
     organizationName:(NSString *)organizationName
-    appSecret:(NSString *)appSecret {
+    appSecret:(NSString *)appSecret
+    iOSShouldUsePushNotificationDelegate:(NSNumber *)iOSShouldUsePushNotificationDelegate {
   HelpCrunchInitializationParams* pigeonResult = [[HelpCrunchInitializationParams alloc] init];
   pigeonResult.helpCrunchAppId = helpCrunchAppId;
   pigeonResult.organizationName = organizationName;
   pigeonResult.appSecret = appSecret;
+  pigeonResult.iOSShouldUsePushNotificationDelegate = iOSShouldUsePushNotificationDelegate;
   return pigeonResult;
 }
 + (HelpCrunchInitializationParams *)fromMap:(NSDictionary *)dict {
@@ -58,10 +60,12 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
   NSAssert(pigeonResult.organizationName != nil, @"");
   pigeonResult.appSecret = GetNullableObject(dict, @"appSecret");
   NSAssert(pigeonResult.appSecret != nil, @"");
+  pigeonResult.iOSShouldUsePushNotificationDelegate = GetNullableObject(dict, @"iOSShouldUsePushNotificationDelegate");
+  NSAssert(pigeonResult.iOSShouldUsePushNotificationDelegate != nil, @"");
   return pigeonResult;
 }
 - (NSDictionary *)toMap {
-  return [NSDictionary dictionaryWithObjectsAndKeys:(self.helpCrunchAppId ? self.helpCrunchAppId : [NSNull null]), @"helpCrunchAppId", (self.organizationName ? self.organizationName : [NSNull null]), @"organizationName", (self.appSecret ? self.appSecret : [NSNull null]), @"appSecret", nil];
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.helpCrunchAppId ? self.helpCrunchAppId : [NSNull null]), @"helpCrunchAppId", (self.organizationName ? self.organizationName : [NSNull null]), @"organizationName", (self.appSecret ? self.appSecret : [NSNull null]), @"appSecret", (self.iOSShouldUsePushNotificationDelegate ? self.iOSShouldUsePushNotificationDelegate : [NSNull null]), @"iOSShouldUsePushNotificationDelegate", nil];
 }
 @end
 
@@ -228,6 +232,78 @@ void HelpCrunchPluginSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<
         [api logoutUserWithCompletion:^(FlutterError *_Nullable error) {
           callback(wrapResult(nil, error));
         }];
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.HelpCrunchPlugin.registerForRemoteMessages"
+        binaryMessenger:binaryMessenger
+        codec:HelpCrunchPluginGetCodec()        ];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(registerForRemoteMessagesWithCompletion:)], @"HelpCrunchPlugin api (%@) doesn't respond to @selector(registerForRemoteMessagesWithCompletion:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        [api registerForRemoteMessagesWithCompletion:^(FlutterError *_Nullable error) {
+          callback(wrapResult(nil, error));
+        }];
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.HelpCrunchPlugin.getNumberOfUnreadChats"
+        binaryMessenger:binaryMessenger
+        codec:HelpCrunchPluginGetCodec()        ];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(getNumberOfUnreadChatsWithCompletion:)], @"HelpCrunchPlugin api (%@) doesn't respond to @selector(getNumberOfUnreadChatsWithCompletion:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        [api getNumberOfUnreadChatsWithCompletion:^(NSNumber *_Nullable output, FlutterError *_Nullable error) {
+          callback(wrapResult(output, error));
+        }];
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.HelpCrunchPlugin.isReady"
+        binaryMessenger:binaryMessenger
+        codec:HelpCrunchPluginGetCodec()        ];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(isReadyWithError:)], @"HelpCrunchPlugin api (%@) doesn't respond to @selector(isReadyWithError:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        FlutterError *error;
+        NSNumber *output = [api isReadyWithError:&error];
+        callback(wrapResult(output, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.HelpCrunchPlugin.hasError"
+        binaryMessenger:binaryMessenger
+        codec:HelpCrunchPluginGetCodec()        ];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(hasErrorWithError:)], @"HelpCrunchPlugin api (%@) doesn't respond to @selector(hasErrorWithError:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        FlutterError *error;
+        NSNumber *output = [api hasErrorWithError:&error];
+        callback(wrapResult(output, error));
       }];
     }
     else {

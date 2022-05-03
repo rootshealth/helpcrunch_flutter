@@ -17,6 +17,7 @@ public class HelpCrunchPluginImpl : NSObject,  HelpCrunchPlugin {
                 HCSConfiguration(forOrganization: params.organizationName,
                 applicationId: params.helpCrunchAppId.stringValue,
                 applicationSecret: params.appSecret)
+         configuration.shouldUsePushNotificationDelegate = params.iOSShouldUsePushNotificationDelegate.boolValue
          HelpCrunch.initWith(configuration, user: nil) { (error) in
                    guard let error = error else {
                            completion(nil)
@@ -71,13 +72,32 @@ public class HelpCrunchPluginImpl : NSObject,  HelpCrunchPlugin {
                 guard let error = error else {
                           completion(nil)
                           return
-                        }
+                }
 
-                        completion(FlutterError.init(code: String(error._code), message: error.localizedDescription, details: error.localizedDescription))
+                completion(FlutterError.init(code: String(error._code), message: error.localizedDescription, details: error.localizedDescription))
 
         }
 
 
 
   }
+
+  public func registerForRemoteMessages( completion: (@escaping (FlutterError?) -> Void)) -> Void {
+        HelpCrunch.registerForRemoteNotifications()
+        completion(nil)
+  }
+
+  public func getNumberOfUnreadChats(completion: (@escaping (NSNumber?, FlutterError?) -> Void)) -> Void {
+        let count = HelpCrunch.numberOfUnreadChats()
+        completion(NSNumber(value: count), nil)
+  }
+
+  public func isReadyWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) -> NSNumber? {
+      return NSNumber(value:HelpCrunch.state() == HCSState.readyState)
+  }
+
+  public  func hasErrorWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) -> NSNumber? {
+      return NSNumber(value: HelpCrunch.state() == HCSState.errorState)
+  }
+
 }

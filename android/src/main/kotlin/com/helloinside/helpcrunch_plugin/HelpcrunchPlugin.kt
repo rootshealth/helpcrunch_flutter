@@ -1,14 +1,14 @@
 package com.helloinside.helpcrunch_plugin
 
-
 import androidx.annotation.NonNull
 import com.helpcrunch.library.core.Callback
 import com.helpcrunch.library.core.HelpCrunch
 import com.helpcrunch.library.core.models.user.HCUser
+import com.helpcrunch.library.core.options.HCOptions
+import com.helpcrunch.library.core.options.design.HCTheme
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import java.lang.Exception
-
 
 class HelpcrunchPlugin : FlutterPlugin {
 
@@ -78,11 +78,27 @@ private class HelpCrunchPluginImpl : Pigeon.HelpCrunchPlugin {
         })
     }
 
+    override fun registerForRemoteMessages(result: Pigeon.Result<Void>?) {
+        result?.error(Exception("not yet implemented"))
+    }
+
+    override fun getNumberOfUnreadChats(resultCallback: Pigeon.Result<Long>?) {
+
+        HelpCrunch.getUnreadChatsCount(object : Callback<Int>() {
+            override fun onSuccess(result: Int) {
+                resultCallback?.success(result.toLong())
+            }
+
+            override fun onError(message: String) {
+                resultCallback?.error(Exception(message))
+            }
+        })
+    }
+
     override fun initialize(
         params: Pigeon.HelpCrunchInitializationParams,
         resultCallback: Pigeon.Result<Void>?
     ) {
-
         HelpCrunch.initialize(
             organization = params.organizationName,
             appId = params.helpCrunchAppId.toInt(),
@@ -96,7 +112,14 @@ private class HelpCrunchPluginImpl : Pigeon.HelpCrunchPlugin {
                     resultCallback?.error(Exception(message))
                 }
             })
+    }
 
+    override fun isReady(): Boolean {
+        return HelpCrunch.getState().isReady()
+    }
+
+    override fun hasError(): Boolean {
+        return HelpCrunch.getState().isError()
     }
 
 
