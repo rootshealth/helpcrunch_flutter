@@ -48,22 +48,24 @@ private class HelpCrunchPluginImpl : Pigeon.HelpCrunchPlugin {
     }
 
     override fun updateUser(user: Pigeon.HelpCrunchUser, resultCallback: Pigeon.Result<Void>?) {
-        HelpCrunch.updateUser(user = HCUser.build {
-            userId = user.id
-            name = user.name
-            email = user.email
-            company = user.company
-            phone = user.phone
-            customData = user.customData
-        }, callback = object : Callback<HCUser>() {
-            override fun onSuccess(result: HCUser) {
-                resultCallback?.success(null)
-            }
+        HelpCrunch.updateUser(
+            user = HCUser.Builder().apply {
+                userId = user.id
+                name = user.name
+                email = user.email
+                company = user.company
+                phone = user.phone
+                customData = user.customData
+            }.build(),
+            callback = object : Callback<HCUser>() {
+                override fun onSuccess(result: HCUser) {
+                    resultCallback?.success(null)
+                }
 
-            override fun onError(message: String) {
-                resultCallback?.error(Exception(message))
-            }
-        })
+                override fun onError(message: String) {
+                    resultCallback?.error(Exception(message))
+                }
+            })
     }
 
     override fun logoutUser(resultCallback: Pigeon.Result<Void>?) {

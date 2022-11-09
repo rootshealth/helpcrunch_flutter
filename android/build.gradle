@@ -2,7 +2,7 @@ group 'com.helloinside.helpcrunch_plugin'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.6.10'
+    ext.kotlin_version = '1.7.10'
     repositories {
         google()
         mavenCentral()
@@ -50,6 +50,6 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //HelpCrunch native package
-    implementation('com.helpcrunch:chat-sdk:3.2.3-rc-01')
+    implementation('com.helpcrunch:chat-sdk:3.2.6')
 
 }
