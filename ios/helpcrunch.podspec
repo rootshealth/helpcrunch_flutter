@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'helpcrunch'
   s.version          = '0.0.2'
-  s.summary          = 'A new flutter plugin project.'
+  s.summary          = 'Helpcrunch SDK for flutter'
   s.description      = <<-DESC
-A new flutter plugin project.
+        Helpcrunch SDK for flutter
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
@@ -21,6 +21,6 @@ A new flutter plugin project.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
 
-  s.dependency 'HelpCrunchSDK', '~> 4.1.0'
+  s.dependency 'HelpCrunchSDK', '~> 4.2.4'
 
 end
