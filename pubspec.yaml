@@ -4,8 +4,8 @@ version: 0.0.2
 homepage:
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
-  flutter: ">=2.5.0"
+  sdk: ">=2.19.0 <3.0.0"
+  flutter: ">=3.7.0"
 
 dependencies:
   flutter:
@@ -17,7 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
-  pigeon: ^2.0.3
+  pigeon: ^9.0.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
