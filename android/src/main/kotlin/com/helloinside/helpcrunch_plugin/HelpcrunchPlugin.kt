@@ -1,11 +1,16 @@
 package com.helloinside.helpcrunch_plugin
 
 import androidx.annotation.NonNull
+import com.google.firebase.messaging.RemoteMessage
 import com.helpcrunch.library.core.Callback
 import com.helpcrunch.library.core.HelpCrunch
 import com.helpcrunch.library.core.models.user.HCUser
 import com.helpcrunch.library.core.options.HCOptions
-import com.helpcrunch.library.core.options.design.HCTheme
+import com.helpcrunch.library.core.options.HCPreChatForm
+import com.helpcrunch.library.core.options.design.HCPreChatTheme
+import com.helpcrunch.library.core.options.theme.HCNotificationsTheme
+import com.helpcrunch.library.core.options.theme.HCTheme
+
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import java.lang.Exception
@@ -101,10 +106,38 @@ private class HelpCrunchPluginImpl : Pigeon.HelpCrunchPlugin {
         params: Pigeon.HelpCrunchInitializationParams,
         resultCallback: Pigeon.Result<Void>?
     ) {
+        val color = params.notificationColor
+
+
+        val notificationTheme = if (color != null) {
+            HCNotificationsTheme.Builder().apply {
+                setColor(color.toInt())
+
+            }.build()
+
+        } else {
+            null
+        }
+
+        val theme = if (notificationTheme != null) {
+            HCTheme.Builder().apply {
+                setNotificationsTheme(notificationTheme)
+            }.build()
+        } else {
+            null
+        }
+
+        val options =
+            if (theme != null)
+                HCOptions.Builder().apply {
+                    setTheme(theme)
+                }.build() else null
+
         HelpCrunch.initialize(
             organization = params.organizationName,
             appId = params.helpCrunchAppId.toInt(),
             secret = params.appSecret,
+            options = options,
             callback = object : Callback<Any>() {
                 override fun onSuccess(result: Any) {
                     resultCallback?.success(null)

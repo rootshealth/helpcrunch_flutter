@@ -12,11 +12,14 @@ class HelpCrunchInitializationParams {
 
   final bool iOSShouldUsePushNotificationDelegate;
 
+  final int? notificationColor;
+
   HelpCrunchInitializationParams({
     required this.helpCrunchAppId,
     required this.organizationName,
     required this.appSecret,
     required this.iOSShouldUsePushNotificationDelegate,
+    required this.notificationColor,
   });
 }
 

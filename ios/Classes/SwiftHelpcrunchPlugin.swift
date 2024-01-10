@@ -16,8 +16,10 @@ public class HelpCrunchPluginImpl : NSObject,  HelpCrunchPlugin {
          let configuration =
                 HCSConfiguration(forOrganization: params.organizationName,
                 applicationId: params.helpCrunchAppId.stringValue,
-                applicationSecret: params.appSecret)
+                applicationSecret: params.appSecret
+                )
          configuration.shouldUsePushNotificationDelegate = params.iOSShouldUsePushNotificationDelegate.boolValue
+
          HelpCrunch.initWith(configuration, user: nil) { (error) in
                    guard let error = error else {
                            completion(nil)
