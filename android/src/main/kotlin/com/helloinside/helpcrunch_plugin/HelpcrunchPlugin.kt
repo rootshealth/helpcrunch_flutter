@@ -9,6 +9,8 @@ import com.helpcrunch.library.core.options.theme.HCNotificationsTheme
 import com.helpcrunch.library.core.options.theme.HCTheme
 import com.helloinside.helpcrunch_plugin.R
 import com.helpcrunch.library.core.options.theme.HCAvatarTheme
+import com.helpcrunch.library.core.options.theme.HCChatAreaTheme
+import com.helpcrunch.library.core.options.theme.HCMessageAreaTheme
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import java.lang.Exception
@@ -125,6 +127,12 @@ private class HelpCrunchPluginImpl : Pigeon.HelpCrunchPlugin {
         val theme = if (notificationTheme != null) {
             HCTheme.Builder().apply {
                 setNotificationsTheme(notificationTheme)
+                setMessageAreaTheme(HCMessageAreaTheme.Builder().apply {
+
+                }.build())
+                setChatAreaTheme(HCChatAreaTheme.build {
+                    this.setOutcomingBubbleColor(0xff585FDF.toInt())
+                })
             }.build()
         } else {
             null
