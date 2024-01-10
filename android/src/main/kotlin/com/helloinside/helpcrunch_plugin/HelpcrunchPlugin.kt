@@ -7,7 +7,8 @@ import com.helpcrunch.library.core.models.user.HCUser
 import com.helpcrunch.library.core.options.HCOptions
 import com.helpcrunch.library.core.options.theme.HCNotificationsTheme
 import com.helpcrunch.library.core.options.theme.HCTheme
-
+import com.helloinside.helpcrunch_plugin.R
+import com.helpcrunch.library.core.options.theme.HCAvatarTheme
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import java.lang.Exception
@@ -109,6 +110,11 @@ private class HelpCrunchPluginImpl : Pigeon.HelpCrunchPlugin {
         val notificationTheme = if (color != null) {
             HCNotificationsTheme.Builder().apply {
                 setColor(color.toInt())
+                setSmallIconRes(R.drawable.notification_icon_helpcrunch)
+                setAvatarTheme(HCAvatarTheme.build {
+                    setUseDefaultAvatarColors(false)
+                    setPlaceholderBackgroundColor(color.toInt())
+                })
 
             }.build()
 
