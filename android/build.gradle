@@ -26,12 +26,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 33 // update to 34 when updating helpcrunch
+    compileSdkVersion 34 // update to 34 when updating helpcrunch
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-        kotlinOptions.freeCompilerArgs += ['-module-name', "com.helloinside.helpcrunch_plugin"]
+        //kotlinOptions.freeCompilerArgs += ['-module-name', "com.helloinside.helpcrunch_plugin"]
     }
 
     kotlinOptions {
@@ -45,6 +45,10 @@ android {
     defaultConfig {
         minSdkVersion 21
     }
+
+    if (project.android.hasProperty("namespace")) {
+        namespace("com.helloinside.helpcrunch_plugin")
+    }
 }
 
 dependencies {
@@ -55,7 +59,7 @@ dependencies {
     // and 3.3.3 crash with SecurtiyExceptions when opening the chat window
     // on compileSdkVersion 33, need to use 34 for that
 
-    implementation('com.helpcrunch:chat-sdk:3.3.2')
+    implementation('com.helpcrunch:chat-sdk:3.3.5')
 
 
 }

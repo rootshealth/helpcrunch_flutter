@@ -11,6 +11,9 @@ import com.helloinside.helpcrunch_plugin.R
 import com.helpcrunch.library.core.options.theme.HCAvatarTheme
 import com.helpcrunch.library.core.options.theme.HCChatAreaTheme
 import com.helpcrunch.library.core.options.theme.HCMessageAreaTheme
+import com.helpcrunch.library.core.options.theme.HCPreChatTheme
+import com.helpcrunch.library.core.options.theme.HCSystemAlertsTheme
+import com.helpcrunch.library.core.options.theme.HCToolbarAreaTheme
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import java.lang.Exception
@@ -108,32 +111,34 @@ private class HelpCrunchPluginImpl : Pigeon.HelpCrunchPlugin {
     ) {
         val color = params.notificationColor
 
+        val avatarTheme = HCAvatarTheme.build {
+            setUseDefaultAvatarColors(false)
+            setPlaceholderBackgroundColor(color?.toInt() ?: 0xffffffff.toInt())
+        }
+
 
         val notificationTheme = if (color != null) {
-            HCNotificationsTheme.Builder().apply {
-                setColor(color.toInt())
-                setSmallIconRes(R.drawable.notification_icon_helpcrunch)
-                setAvatarTheme(HCAvatarTheme.build {
-                    setUseDefaultAvatarColors(false)
-                    setPlaceholderBackgroundColor(color.toInt())
-                })
-
-            }.build()
-
+            HCNotificationsTheme.build {
+                this.setColor(color.toInt())
+                this.setSmallIconRes(R.drawable.notification_icon_helpcrunch)
+                this.setAvatarTheme(avatarTheme)
+            }
         } else {
             null
         }
 
         val theme = if (notificationTheme != null) {
-            HCTheme.Builder().apply {
-                setNotificationsTheme(notificationTheme)
-                setMessageAreaTheme(HCMessageAreaTheme.Builder().apply {
+            HCTheme.build {
+                this.setNotificationsTheme(notificationTheme)
 
-                }.build())
-                setChatAreaTheme(HCChatAreaTheme.build {
-                    this.setOutcomingBubbleColor(0xff585FDF.toInt())
+                this.setToolbarAreaTheme(HCToolbarAreaTheme.build {
+                    this.setAvatarTheme(avatarTheme)
                 })
-            }.build()
+                this.setChatAreaTheme(HCChatAreaTheme.build {
+                    this.setOutcomingBubbleColor(0xff585FDF.toInt())
+                    this.setAvatarTheme(avatarTheme)
+                })
+            }
         } else {
             null
         }
