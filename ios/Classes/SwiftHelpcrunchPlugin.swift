@@ -85,8 +85,12 @@ public class HelpCrunchPluginImpl : NSObject,  HelpCrunchPlugin {
   }
 
   public func registerForRemoteMessages( completion: (@escaping (FlutterError?) -> Void)) -> Void {
-        HelpCrunch.registerForRemoteNotifications()
-        completion(nil)
+         DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+
+                    completion(nil)
+          }
+
   }
 
   public func getNumberOfUnreadChats(completion: (@escaping (NSNumber?, FlutterError?) -> Void)) -> Void {
