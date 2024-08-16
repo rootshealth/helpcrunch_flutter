@@ -43,7 +43,6 @@ private class HelpCrunchPluginImpl : Pigeon.HelpCrunchPlugin {
 
     override fun showChatScreen(resultCallback: Pigeon.Result<Void>) {
         HelpCrunch.showChatScreen(
-            options = null,
             callback = object : Callback<Any?>() {
                 override fun onSuccess(result: Any?) {
                     resultCallback.success(null)

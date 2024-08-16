@@ -54,12 +54,8 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //HelpCrunch native package
-    // can't upgrade to 3.3.5 because of firebase crashes in release mode :(
-    // and 3.3.4 has https://github.com/helpcrunch/android-sdk-demo/issues/77
-    // and 3.3.3 crash with SecurtiyExceptions when opening the chat window
-    // on compileSdkVersion 33, need to use 34 for that
 
-    implementation('com.helpcrunch:chat-sdk:3.3.5')
+    implementation('com.helpcrunch:chat-sdk:3.3.8')
 
 
 }
