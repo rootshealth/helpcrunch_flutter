@@ -55,7 +55,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //HelpCrunch native package
 
-    implementation('com.helpcrunch:chat-sdk:3.3.8')
+    implementation('com.helpcrunch:chat-sdk:3.3.9')
 
 
 }
